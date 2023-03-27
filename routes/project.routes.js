@@ -31,7 +31,7 @@ router.get("/projects/:id", async (req, res, next) => {
     const id = req.params.id
 
     try {
-        const project = await Project.findById(id)
+        const project = await Project.findById(id).populate('tasks')
         res.json(project);
     } catch (err) {
         console.log(err)

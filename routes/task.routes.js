@@ -13,6 +13,9 @@ const Project = require('../models/Project.model');
 //We update the project document by pushing the _id of the new task to the tasks array:
 
 router.post('/tasks', (req, res, next) => {
+    //The projectId comes from within the project in which we are creating a task. 
+    //We will handle this on the frontend. For now when testing with Postman we  must manually get the id from the document created under
+    //the Project collection / model
     const { title, description, projectId } = req.body;
 
     Task.create({ title, description, project: projectId })

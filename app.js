@@ -9,6 +9,8 @@ require("./db");
 // https://www.npmjs.com/package/express
 const express = require("express");
 
+const { isAuthenticated } = require("./middleware/jwt.middleware");
+
 const app = express();
 
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
@@ -22,12 +24,18 @@ const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
 const projectRouter = require('./routes/project.routes');     // <== IMPORT
-app.use("/api", projectRouter);
+app.use("/api", isAuthenticated, projectRouter);
 
 const tasksRouter = require('./routes/task.routes');     // <== IMPORT
-app.use("/api", tasksRouter);
+app.use("/api", isAuthenticated, tasksRouter);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 
 module.exports = app;
+
+
+//We will import the isAuthenticated middleware to the app.js file and use it to protect all of the /api/projects 
+//and /api/tasks routes:
+//We can also use our JWT validation middleware isAuthenticated to protect individual routes. 
+//We will see how to do this in the next section.
